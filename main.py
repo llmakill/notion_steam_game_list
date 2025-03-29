@@ -8,6 +8,7 @@ STEAM_API_KEY = os.environ.get("STEAM_API_KEY")
 STEAM_USER_ID = os.environ.get("STEAM_USER_ID")
 NOTION_API_KEY = os.environ.get("NOTION_API_KEY")
 NOTION_DATABASE_ID = os.environ.get("NOTION_DATABASE_ID")
+print(NOTION_DATABASE_ID)
 # OPTIONAL
 include_played_free_games = os.environ.get("include_played_free_games")
 enable_item_update = os.environ.get("enable_item_update")
