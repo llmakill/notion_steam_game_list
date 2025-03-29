@@ -12,15 +12,25 @@ file_handler = logging.FileHandler("app.log", encoding="utf-8")
 file_handler.setLevel(logging.INFO)
 logger.addHandler(file_handler)
 
+# # CONFIG
+# STEAM_API_KEY = os.environ.get("STEAM_API_KEY")
+# STEAM_USER_ID = os.environ.get("STEAM_USER_ID")
+# NOTION_API_KEY = os.environ.get("NOTION_API_KEY")
+# NOTION_DATABASE_ID = os.environ.get("NOTION_DATABASE_ID")
+# # OPTIONAL
+# include_played_free_games = os.environ.get("include_played_free_games")
+# enable_item_update = os.environ.get("enable_item_update")
+# enable_filter = os.environ.get("enable_filter")
+
 # CONFIG
-STEAM_API_KEY = os.environ.get("STEAM_API_KEY")
-STEAM_USER_ID = os.environ.get("STEAM_USER_ID")
-NOTION_API_KEY = os.environ.get("NOTION_API_KEY")
-NOTION_DATABASE_ID = os.environ.get("NOTION_DATABASE_ID")
+STEAM_API_KEY = '2D87681EC59F69EF580C6E12757DF4E6'
+STEAM_USER_ID = '76561198221001824'
+NOTION_DATABASE_API_KEY = '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'
+NOTION_DATABASE_ID = "1c59665c516c80aaaaf6fb36e03f2c33"
 # OPTIONAL
-include_played_free_games = os.environ.get("include_played_free_games")
-enable_item_update = os.environ.get("enable_item_update")
-enable_filter = os.environ.get("enable_filter")
+include_played_free_games = 'true'
+enable_item_update = 'false'
+enable_filter = 'true'
 
 
 def send_request_with_retry(
