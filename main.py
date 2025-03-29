@@ -3,6 +3,15 @@ import time
 import os
 import logging
 
+# MISC
+MAX_RETRIES = 20
+RETRY_DELAY = 2
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("")
+file_handler = logging.FileHandler("app.log", encoding="utf-8")
+file_handler.setLevel(logging.INFO)
+logger.addHandler(file_handler)
+
 # CONFIG
 STEAM_API_KEY = os.environ.get("STEAM_API_KEY")
 STEAM_USER_ID = os.environ.get("STEAM_USER_ID")
@@ -14,15 +23,6 @@ logger.info(NOTION_API_KEY)
 include_played_free_games = os.environ.get("include_played_free_games")
 enable_item_update = os.environ.get("enable_item_update")
 enable_filter = os.environ.get("enable_filter")
-
-# MISC
-MAX_RETRIES = 20
-RETRY_DELAY = 2
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("")
-file_handler = logging.FileHandler("app.log", encoding="utf-8")
-file_handler.setLevel(logging.INFO)
-logger.addHandler(file_handler)
 
 
 def send_request_with_retry(
