@@ -316,6 +316,7 @@ def get_achievements_count(game):
 
 
 if __name__ == "__main__":
+    logger.info(f"{STEAM_API_KEY}+{STEAM_USER_ID}+{NOTION_API_KEY}+{NOTION_DATABASE_ID}")
     owned_game_data = get_owned_game_data_from_steam()
 
     for game in owned_game_data["response"]["games"]:
