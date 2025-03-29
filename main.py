@@ -23,10 +23,10 @@ logger.addHandler(file_handler)
 # enable_filter = os.environ.get("enable_filter")
 
 # CONFIG
-STEAM_API_KEY = '2D87681EC59F69EF580C6E12757DF4E6'
-STEAM_USER_ID = '76561198221001824'
-NOTION_API_KEY = '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'
-NOTION_DATABASE_ID = "1c59665c516c80aaaaf6fb36e03f2c33"
+STEAM_API_KEY = secrets.STEAM_API_KEY
+STEAM_USER_ID = secrets.STEAM_USER_ID
+NOTION_API_KEY = secrets.NOTION_API_KEY
+NOTION_DATABASE_ID = secrets.NOTION_DATABASE_ID
 # OPTIONAL
 include_played_free_games = 'true'
 enable_item_update = 'false'
