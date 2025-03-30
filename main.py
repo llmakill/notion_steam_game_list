@@ -116,7 +116,7 @@ def add_item_to_notion_database(game, achievements_info):
         completion = -1
     
     # 新增状态判断逻辑  
-    status_value = "未完成"  
+    status_value = "未开始"  
     if completion == 100:  
         status_value = "已完成"  
     elif playtime > 0:  
@@ -211,7 +211,7 @@ def update_item_to_notion_database(page_id, game, achievements_info, manual_stat
         completion = -1
     
     # 新增优先级判断逻辑
-    status_value = "未完成"
+    status_value = "未开始"
     # 优先使用手工状态
     if manual_status:
         status_value = manual_status['name']
