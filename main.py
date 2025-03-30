@@ -114,6 +114,13 @@ def add_item_to_notion_database(game, achievements_info):
         )
     else:
         completion = -1
+    
+    # 新增状态判断逻辑  
+    status_value = "未完成"  
+    if completion == 100:  
+        status_value = "已完成"  
+    elif playtime > 0:  
+        status_value = "进行中"  
 
     data = {
         "parent": {
@@ -137,6 +144,10 @@ def add_item_to_notion_database(game, achievements_info):
                 "type": "number",
                 "number": achieved_achievements,
             },
+            "Status": {
+                "type": "status",  
+                "status": {"name": status_value} 
+            }
         },
         "cover": {"type": "external", "external": {"url": f"{cover_url}"}},
         "icon": {"type": "external", "external": {"url": f"{icon_url}"}},
@@ -174,7 +185,7 @@ def query_item_from_notion_database(game):
         return response.json()
 
 
-def update_item_to_notion_database(page_id, game, achievements_info):
+def update_item_to_notion_database(page_id, game, achievements_info, manual_status=None):
     url = f"https://api.notion.com/v1/pages/{page_id}"
     headers = {
         "Authorization": f"Bearer {NOTION_API_KEY}",
@@ -198,6 +209,17 @@ def update_item_to_notion_database(page_id, game, achievements_info):
         )
     else:
         completion = -1
+    
+    # 新增优先级判断逻辑
+    status_value = "未完成"
+    # 优先使用手工状态
+    if manual_status:
+        status_value = manual_status['name']
+    else:
+        if completion == 100:  
+            status_value = "已完成"
+        elif playtime > 0:
+            status_value = "进行中"
 
     logger.info(f"updating {game['name']} to notion...")
 
@@ -222,6 +244,11 @@ def update_item_to_notion_database(page_id, game, achievements_info):
         },
         "cover": {"type": "external", "external": {"url": f"{cover_url}"}},
         "icon": {"type": "external", "external": {"url": f"{icon_url}"}},
+    }
+    # 新增Status字段
+    data["properties"]["Status"] = {
+        "type": "status",  
+        "status": {"name": status_value}  
     }
 
     try:
@@ -257,6 +284,7 @@ def database_create(page_id):
             "total achievements": {"number": {}},
             "achieved achievements": {"number": {}},
             "store url": {"url": {}},
+            "Status": {"status": {}}
         },
     }
 
@@ -316,7 +344,6 @@ def get_achievements_count(game):
 
 
 if __name__ == "__main__":
-    logger.info(f"{STEAM_API_KEY}+{STEAM_USER_ID}+{NOTION_API_KEY}+{NOTION_DATABASE_ID}")
     owned_game_data = get_owned_game_data_from_steam()
 
     for game in owned_game_data["response"]["games"]:
@@ -337,6 +364,13 @@ if __name__ == "__main__":
 
         if queryed_item["results"] != []:
             if enable_item_update == "true":
+                existing_page = queryed_item["results"][0]
+
+                manual_status = None
+                if existing_page.get('properties'):
+                    if existing_page['properties'].get('Manual Status'):
+                        manual_status = existing_page['properties']['Manual Status'].get('status', {})
+
                 logger.info(f"{game['name']} already exists!")
                 playtime = round(float(game["playtime_forever"]) / 60, 1)
 
@@ -346,16 +380,20 @@ if __name__ == "__main__":
                     and queryed_item["results"][0]["properties"]["total achievements"][
                         "number"
                     ]
-                    == achievements_info["total"]
+                    == achievements_info["total"] and queryed_item["results"][0]["properties"]["Manu"]["status"]["name"] == "已完成" and manual status is None
                 ):
                     logger.info(f"{game['name']} does not need to update! Skipping!")
                 else:
                     logger.info(f"{game['name']} need to update! Updating!")
                     update_item_to_notion_database(
-                        queryed_item["results"][0]["id"], game, achievements_info
+                        queryed_item["results"][0]["id"],
+                        game,
+                        achievements_info,
+                        manual_status
                     )
             else:
                 logger.info(f"{game['name']} already exists! skipping!")
         else:
             logger.info(f"{game['name']} does not exist! creating new item!")
             add_item_to_notion_database(game, achievements_info)
+
