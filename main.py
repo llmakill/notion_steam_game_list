@@ -380,7 +380,7 @@ if __name__ == "__main__":
                     and queryed_item["results"][0]["properties"]["total achievements"][
                         "number"
                     ]
-                    == achievements_info["total"] and queryed_item["results"][0]["properties"]["Manu"]["status"]["name"] == "已完成" and manual status is None
+                    == achievements_info["total"] and queryed_item["results"][0]["properties"]["Manu"]["status"]["name"] == "已完成" and manual_status is None
                 ):
                     logger.info(f"{game['name']} does not need to update! Skipping!")
                 else:
